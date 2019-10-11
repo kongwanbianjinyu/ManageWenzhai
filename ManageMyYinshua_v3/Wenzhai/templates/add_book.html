@@ -1,0 +1,81 @@
+<html lang="zh-CN">
+<head>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<title>保定文斋印刷书籍管理系统</title>
+</head>
+<body role="document">
+<!-- 导航栏 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container">
+<div class="navbar-header">
+<a class="navbar-brand" href="/search_book_name/">保定文斋印刷书籍管理系统</a>
+</div>
+<div id="navbar" class="collapse navbar-collapse">
+<ul class="nav navbar-nav">
+<li><a href="/search_book_name/">查询书籍</a></li>
+<li><a href="/revise_generation/">修改记录</a></li>
+<li class="active"><a href="#">添加书籍</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/admin/">{{user}}</a></li>
+<li><a href="/logout/">退出</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<!--添加书籍搜索表单-->
+<div class="modal-dialog" style="margin-top: 10%;">
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title text-center" id="myModalLabel">在此新增书籍信息</h4>
+    </div>
+    <div class="modal-body" >
+    <!--<div id="navbar" class="navbar-collapse collapse">-->
+    <form action="/add_book/" method="post">
+    {% csrf_token %}<div class="form-group">
+    {{ form.as_p }}</div>
+        <div class="modal-footer">
+            <button id="btn" type="submit" class="btn btn-primary form-control">添加书籍</button>
+        </div>
+
+	
+	<font color="red">
+	<br>{{ hint }}
+	</font>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 代数列表 -->
+<div class="container">
+<div class="row" style="padding-top: 80px;">
+<div class="col-md-12">
+<table class="table table-striped">
+<thead>
+<tr>
+<th>书籍编号</th><th>书籍名称</th><th>内容标签</th><th>总的代数</th><th>书籍印数</th><th>添加时间</th>
+</tr>
+</thead>
+<tbody>
+{% for generation in generation_list %}
+<tr>
+<td>{{ label.Book }}</td>
+<td>{{ thisBook.BookName }}</td>
+<td>{{ label.LabelName }}</td>
+<td>{{ label.ShowGenerationNum }}</td>
+    <td>{{ label.PrintNum }}</td>
+<td>{{ label.Create_time }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

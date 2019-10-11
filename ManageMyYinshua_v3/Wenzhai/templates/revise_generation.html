@@ -1,0 +1,106 @@
+<html lang="zh-CN">
+<head>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<title>保定文斋印刷书籍管理系统</title>
+</head>
+<body role="document">
+<!-- 导航栏 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container">
+<div class="navbar-header">
+<a class="navbar-brand" href="/search_book_name/">保定文斋印刷书籍管理系统</a>
+</div>
+<div id="navbar" class="collapse navbar-collapse">
+<ul class="nav navbar-nav">
+<li><a href="/search_book_name/">查询书籍</a></li>
+<li class="active"><a href="#">修改记录</a></li>
+<li><a href="/add_book/">添加书籍</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/admin/">{{user}}</a></li>
+<li><a href="/logout/">退出</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<!--添加书籍搜索表单-->
+<div class="modal-dialog" style="margin-top: 10%;">
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title text-center" id="myModalLabel">印完相应代数之后在此进行标注</h4>
+    </div>
+    <div class="modal-body">
+    <form action="/revise_generation/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="modal-footer">
+            <button id="btn" type="submit" class="btn btn-primary form-control">修改记录</button>
+    </div>
+	
+	<font color="red">
+	<br>{{ hint }}
+	</font>
+</form>
+    </div>
+</div>
+</div>
+
+
+<!-- 代数列表 -->
+<div class="container">
+<div class="row" style="padding-top: 80px;">
+<div class="col-md-12">
+<table class="table table-striped">
+<thead>
+<tr>
+<th>所属书籍</th><th>书籍名称</th><th>代数编号</th><th>印张</th><th>状态</th><th>已印刷数</th><th>签名</th><th>印刷完成时间</th>
+</tr>
+</thead>
+<tbody>
+{% for generation in generation_list %}
+<tr>
+<td>{{ thisbook.BookNumber }}</td>
+<td>{{ thisbook.BookName }}</td>
+<td>{{ generation.GenerationNumber }}</td>
+<td>{{ generation.Contain }}</td>
+
+{% if generation.Status == "未开始" %}
+<td class="danger">{{ generation.Status }}</td>
+{% elif generation.Status == "进行中"%}
+<td class="warning">{{ generation.Status }}</td>
+{% else %}
+    <td class="success">{{ generation.Status }}</td>
+{% endif %}
+
+{% if generation.AlreadyPrintNum == '0' %}
+<td class= "danger">{{ generation.AlreadyPrintNum}}</td>
+{% elif generation.Status == "进行中"%}
+    <td class= "warning">{{ generation.AlreadyPrintNum}}</td>
+{% else %}
+    <td class= "success">{{ generation.AlreadyPrintNum}}</td>
+{% endif %}
+
+{% if generation.Sign == "" %}
+<td class= "danger">{{ generation.Sign }}</td>
+{% elif generation.Status == "进行中"%}
+    <td class= "warning">{{ generation.Sign }}</td>
+{% else %}
+<td class= "success">{{ generation.Sign }}</td>
+{% endif %}
+
+<td>{{ generation.Create_time }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+</body>
+</html>
